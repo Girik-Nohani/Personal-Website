@@ -1,6 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-page:    #000300;
+  --color-card:    #1A1B1A;
+  --color-teal:    #00C6BE;
+  --color-yellow:  #F0E100;
+  --color-divider: #2A2A2A;
+
+  --color-white:   #FFFFFF;
+  --color-gray-1:  #E6E6E6;
+  --color-gray-2:  #CCCCCC;
+  --color-gray-3:  #B3B3B3;
+  --color-gray-4:  #999999;
+
+  /* Fonts */
+  --font-exo2: "Exo 2", sans-serif;
+  --font-jost: "Jost", sans-serif;
+
+  /* Radius */
+  --radius-card: 16px;
+
+  /* Spacing (Navbar) */
+  --height-nav-desktop: 75px;
+  --height-nav-mobile: 56px;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-exo2);

@@ -1,0 +1,815 @@
+
+
+PRODUCT REQUIREMENTS DOCUMENT
+Girik 
+Nohani
+ — Personal Portfolio Website
+Version 
+1.0  ·
+  March 2026  ·  Built with Cursor AI
+Client
+Girik 
+Nohani
+Prepared for
+Cursor AI-assisted development
+Document status
+Final — Ready for build
+Last updated
+March 2026
+1. Project Overview
+This document defines all requirements, architecture decisions, component specifications, content schema, and interaction 
+behaviors
+ for the Girik 
+Nohani
+ portfolio website. It is intended to be passed directly to Cursor as the primary context document for AI-assisted development.
+Project type
+Personal portfolio website — cybersecurity professional
+Primary goals
+Attract freelance clients, support job applications, showcase projects
+Design source
+Figma (single-page, dark cyberpunk aesthetic)
+Build method
+AI-assisted via Cursor — this PRD is the primary prompt context
+Target launch
+As soon as content is finalized
+2. Tech Stack
+All technology choices are finalized. Do not deviate from this stack without explicit approval.
+Layer
+Technology
+Rationale
+Framework
+Next.js 14
+App Router, SSG for performance and basic SEO, 
+Vercel
+-native
+Styling
+Tailwind CSS
+Utility-first, works well with AI 
+codegen
+, maps cleanly to dark theme
+CMS
+Sanity.io
+Non-technical editing UI, generous free tier, next-sanity integration
+Email / Forms
+Resend + React Email
+Delivers contact form submissions directly to client inbox, 3k/
+mo
+ free
+Animations
+Framer Motion
+Scroll reveals, typewriter hero text, hover states, glitch effects
+Hosting
+Vercel
+Free tier, auto-deploy from Git, zero config for Next.js
+2.1 Key Packages
+next-sanity — Sanity client and image component for Next.js
+@sanity/image-url — Responsive image URL builder
+react-email — Email template components
+resend — Email delivery SDK
+framer-motion — Animation library
+@tailwindcss/typography — Prose styling for rich text from Sanity
+lucide
+-react — Icon set
+3. Design System
+3.1 
+Color
+ Palette
+All values extracted directly from the Figma 
+color
+ palette. Do not approximate or substitute.
+Page background
+#000300 — near-pure black, the base background for the entire site
+Card / section background
+#1A1B1A — slightly lighter dark, used for cards, nav, content blocks
+Accent (teal)
+#00C6BE — primary accent: CTAs, section numbers, highlights, borders
+Accent (yellow)
+#F0E100 — secondary accent: used sparingly, hero tagline highlight
+Text (white)
+#FFFFFF — primary headings and high-emphasis text
+Text (light 
+gray
+)
+#E6E6E6 — body text, descriptions
+Text (mid 
+gray
+ 1)
+#CCCCCC — secondary body text
+Text (mid 
+gray
+ 2)
+#B3B3B3 — meta text, captions, dates
+Text (muted)
+#999999 — placeholder text, disabled states, muted labels
+Text (dark)
+#333333 — used on light backgrounds only (e.g. off-white sections)
+White line / divider
+#F7F0F0 — used for horizontal rules, section dividers, and light decorative lines
+Border
+#2A2A2A — card borders, dividers, input outlines
+3.2 Typography
+Import from Google Fonts: Exo 2 (headings/display) + 
+Jost
+ (body/UI). Both loaded via next/font/google. These are the exact fonts used in the Figma design.
+Hero name
+Exo 2, 64px mobile / 96px desktop, bold, #FFFFFF
+Hero tagline
+Jost
+, 18px / 22px, regular, #B3B3B3
+Section numbers (C1, C2)
+Exo 2, 96px, bold, opacity 0.06, decorative
+Section headings (H2)
+Exo 2, 32px / 48px, bold, #FFFFFF
+Sub-headings (H3)
+Exo 2, 20px / 24px, bold, #E6E6E6
+Body text
+Jost
+, 16px / 18px, regular, #E6E6E6 (accessibility fix from Figma 
+gray
+)
+Meta/caption text
+Jost
+, 13px / 14px, regular, #999999
+Button text
+Exo 2, 14px, bold, letter-spacing 0.05em
+CMS badge text
+Jost
+, 11px, uppercase, letter-spacing 0.1em
+3.3 Design Changes from Figma (Implemented in Code)
+The following changes from the Figma design must be implemented directly in code — do not replicate the Figma version for these items:
+CHANGE 1: 
+Body text 
+color
+: Changed from #888888 to #F0F0F0 throughout to meet WCAG AA contrast ratio (4.5:1 minimum).
+CHANGE 2: 
+Hover/interaction states: Fully defined in Section 6. The Figma has no hover states — all must be built from this PRD.
+CHANGE 3: 
+Services section: Must appear BEFORE the Contact section in the final page order.
+4. Page Structure &amp; Section Order
+This is a single-page application with smooth scroll navigation. The page order below is final and supersedes the Figma layout.
+Section
+Route/ID
+CMS-Driven?
+Navigation
+#nav
+No — static
+Hero
+#hero
+No — static
+About
+#about
+Partial — bio text from CMS
+Education
+#education
+Yes — education entries from CMS
+Certification
+#certification
+Yes — certifications from CMS
+Skills / Tools
+#skills
+Yes — skill categories from CMS
+Projects
+#projects
+Yes — project cards from CMS
+Testimonials
+#testimonials
+Yes — testimonials from CMS
+Services
+#services
+Yes — from CMS. Built but hidden (
+isVisible
+: false). Client enables via toggle.
+Experience
+#experience
+Yes — from CMS. Built but hidden (
+isVisible
+: false). Client enables via toggle.
+Contact
+#contact
+No — static form
+Footer
+#footer
+No — static
+5. Component Breakdown
+5.1 Navigation
+Sticky top nav, transparent background that gains a blur + border-bottom on scroll (backdrop-blur-md)
+Logo: 'GN' monogram in teal, Space Grotesk bold
+Links: Home, About, Projects, Contact — smooth scroll to section IDs
+Mobile: hamburger icon → full-screen overlay menu with slide-in animation (Framer Motion)
+Active link: teal underline indicator that follows scroll position
+Download CV button: outlined teal button, top-right of nav
+5.2 Hero Section
+Mobile-first layout: stacked single column, desktop: two-column with photo right
+Label above name: 'Hello' in small teal caps with a short horizontal rule
+Name: typewriter animation via Framer Motion — types 'I'm Girik 
+Nohani
+' character by character with blinking cursor
+Tagline: 'Give me a glitch, a gap, or a system that doesn't make sense — I'll take it from there.' Fade in after typewriter completes
+CTAs: 'More about me' (outlined), 'Get in touch' (filled teal), 'Download CV' (ghost with arrow icon)
+Vertical scroll indicator: animated chevron or dot on the right edge (desktop only)
+Background: subtle noise texture or scanline overlay on dark background
+5.3 About Section
+Section marker: 'C1' decorative large numeral, opacity 6%, positioned top-left
+Two-column layout on desktop: image left (rounded, teal border glow on hover), text right
+Bio text pulled from Sanity (rich text field)
+Social icon links: GitHub, LinkedIn — teal on hover, 24px icons from 
+lucide
+-react
+Download CV button below bio
+5.4 Education Section
+Timeline layout: left vertical teal line, education entries stacked on right
+Each entry: degree title (bold), institution (teal), year range (
+gray
+), description paragraph
+Entries loaded from Sanity, sorted by date descending
+Scroll-triggered fade-in for each entry (Framer Motion, staggered)
+5.5 Certification Section
+Three-column layout on desktop, single column on mobile
+Left sidebar: list of certification names as clickable items
+Right content: selected certification detail (name, issuer, year, description)
+Active certification highlighted with teal left border
+Certifications loaded from Sanity
+5.6 Skills / Tools Section
+Accordion layout: each skill category is an expandable row
+Category header: icon + category name + chevron, teal accent on open state
+Expanded content: bulleted list of individual tools/skills
+Only one accordion open at a time
+Categories and skills loaded from Sanity
+Smooth expand/collapse animation via Framer Motion 
+AnimatePresence
+5.7 Projects Section
+Section marker: 'C2' decorative numeral
+Label: 'Freelance / Projects' in small caps
+Cards alternate left/right layout on desktop (first card: image left, text right; second: image right, text left, etc.)
+Each card: project image, category badge (e.g. 'Website'), title, description, tech stack tags, 'Read Case Study' link, date
+Hover state: image scales to 1.03, card border becomes teal (see Section 6)
+Projects loaded from Sanity, sortable by date
+Each project links to an individual case study page: /projects/[slug]
+5.8 Testimonials Section
+Horizontal carousel/slider — one testimonial visible at a time on mobile, two on desktop
+Each slide: quote text, client name (bold), client role/title
+Navigation: dot indicators + 
+prev
+/next arrows
+Autoplay: advances every 5 seconds, pauses on hover
+Testimonials loaded from Sanity
+5.9 Services Section
+Four-card grid: 2 columns on mobile, 4 on desktop
+Each card: service icon, service name, short description, pricing ($/hr)
+Hover: card lifts with box-shadow, border becomes teal
+Services and pricing loaded from Sanity
+5.10 Experience Section
+Timeline layout, similar to Education
+Left side: company name, period
+Right side: role title, description
+Pagination: show 1 of N entries, with 
+prev
+/next navigation (matching the Figma '1/4' indicator)
+Experience entries loaded from Sanity
+5.11 Contact Section
+Section marker: 'C3' decorative numeral
+Two-column layout: form left, info text + social links right
+Form fields: Full Name, Email Address, Subject, Message (
+textarea
+)
+Submission: POST to /
+api
+/contact, triggers Resend email to client inbox
+Success state: inline success message with teal checkmark — do NOT redirect
+Error state: inline error message in red
+Input focus state: teal outline, no default browser ring
+Social links: icons with labels (LinkedIn, GitHub, Email)
+5.12 Footer
+One line: '© 2025 Girik 
+Nohani
+. All Rights Reserved'
+Centered
+, muted text, teal accent on name
+Back to top button: bottom-right corner, appears after scrolling 500px
+6. Hover &amp; Interaction States
+These states are not in the Figma. They must be implemented as defined here. All transitions: duration 200ms, ease-out unless specified.
+6.1 Navigation Links
+Default: #AAAAAA text
+Hover: #F0F0F0 text + teal underline slides in from left (
+scaleX
+ 0 → 1, transform-origin: left)
+Active (in viewport): teal underline persists
+6.2 Buttons
+Primary (filled teal): hover → background lightens to #00DDD5 (10% lighter than #00C6BE), slight 
+scale(
+1.02)
+Secondary (outlined): hover → background fills with teal at 10% opacity, border brightens
+Ghost/text buttons: hover → teal text 
+color
+, arrow icon translates 4px right
+6.3 Project Cards
+Default: dark card background, 1px border #2A2A2A
+Hover: border 
+color
+ → #00C6BE, image scale → 1.03 (overflow hidden), box-shadow: 0 8px 32px 
+rgba
+(
+0,198,190,0.12)
+'Read Case Study' link: arrow icon translates 4px right on card hover
+6.4 Service Cards
+Default: dark card, subtle border
+Hover: 
+translateY
+(-4px), border → #00C6BE, icon 
+color
+ → #00C6BE
+6.5 Skill Accordion
+Closed header hover: background lightens to #1E1E1E, chevron rotates hint
+Open state: teal left border 2px, header background #1A1A1A
+6.6 Social Icons
+Default: #666666
+Hover: teal (#00C6BE), 
+scale(
+1.1), 
+translateY
+(-2px)
+6.7 Form Inputs
+Default: border #2A2A2A, background #111111
+Focus: border #00C6BE, box-shadow 0 0 0 2px 
+rgba
+(
+0,198,190,0.15)
+Error: border red-500
+6.8 Back-to-top Button
+Hover: background teal, icon 
+color
+ black
+7. Mobile-First Responsive Specification
+Build mobile-first. Use Tailwind's responsive prefix (
+sm
+:,
+ md:, 
+lg
+:) to scale up. Core breakpoints: 
+sm
+ = 640px, md = 768px, 
+lg
+ = 1024px, xl = 1280px.
+7.1 Navigation
+Mobile: hamburger menu, full-screen overlay, links stacked vertically at large size
+md+: horizontal nav bar, inline links
+7.2 Hero
+Mobile: single column, name ~48px, CTAs stacked vertically
+lg
++: two columns, name ~80px, photo visible on right
+7.3 About
+Mobile: single column, photo on top, text below
+md+: two columns, photo left, text right
+7.4 Education &amp; Experience Timelines
+Mobile: timeline line hidden, cards full-width stacked
+md+: vertical timeline line, alternating or right-aligned entries
+7.5 Certifications
+Mobile: tab-style navigation above content
+md+: sidebar left, content right
+7.6 Skills Accordion
+Mobile: full-width accordion, compact headers
+No layout 
+change
+ at larger breakpoints — accordion works at all sizes
+7.7 Projects
+Mobile: single column, image on top, text below
+lg
++: alternating two-column layout
+7.8 Services
+Mobile: 2-column grid
+lg
++: 4-column grid
+7.9 Contact
+Mobile: single column, form first, info below
+md+: two columns side by side
+8. Sanity CMS Schema
+Create these schemas in /sanity/schema/. Register all in the schema index. There are 7 collection types (multiple documents) and 3 singletons (single document). Singletons must be configured in 
+sanity.config.ts
+ with __
+experimental_actions
+ to prevent creation of multiple instances.
+8.1 Project
+title: string (required)
+slug: slug (required, source: title)
+category: string (e.g. 'Website', 'Tool', 'Research')
+coverImage
+: image (required)
+description: text (required, short — shown on card)
+techStack
+: array of strings
+publishedAt
+: date
+liveUrl
+: 
+url
+ (optional) — 'Read Case Study' button links here, opens in new tab
+githubUrl
+: 
+url
+ (optional)
+Implementation note: The 'Read Case Study' button is an external link to 
+liveUrl
+. If 
+liveUrl
+ is not set, hide the button entirely — do not render a broken or disabled link. There are NO internal case study pages. Do not generate /projects/[slug] dynamic routes.
+8.2 Skill Category
+categoryName
+: string (e.g. 'Networking &amp; Systems')
+icon: string (
+lucide
+ icon name)
+skills: array of strings
+order: number (controls display order)
+8.3 Education
+degree: string (required)
+institution: string (required)
+period: string (e.g. '2023 to 2024')
+description: text
+order: number
+8.4 Certification
+name: string (required)
+issuer: string (e.g. 'Google', 'TCM Security')
+year: string
+description: text
+order: number
+8.5 Testimonial
+quote: text (required)
+clientName
+: string (required)
+clientRole
+: string
+clientPhoto
+: image (optional)
+order: number
+8.6 
+Service  ⟶
+  Hidden until future release
+Build this schema and section fully, but default 
+isVisible
+ to false. The client can toggle it live from Sanity Studio when ready — no redeployment needed.
+serviceName
+: string (required)
+description: text
+pricePerHour
+: number
+icon: string (
+lucide
+ icon name)
+order: number
+isVisible
+: 
+boolean
+ (default: 
+false)  ←
+ controls section visibility on site
+8.7 
+Experience  ⟶
+  Hidden until future release
+Same visibility pattern as Services. Build fully, default 
+isVisible
+ to false, client enables when ready.
+company: string (required)
+role: string (required)
+period: string (e.g. '2019 to 2020')
+description: text
+order: number
+isVisible
+: 
+boolean
+ (default: 
+false)  ←
+ controls section visibility on site
+Implementation note: In 
+page.tsx
+, wrap each section conditionally — {
+servicesVisible
+ &amp;&amp; &lt;Services /&gt;} and {
+experienceVisible
+ &amp;&amp; &lt;Experience /&gt;}. Fetch the 
+isVisible
+ flag from Sanity as part of the page query. The Sanity Studio will show this as a simple toggle 
+labeled
+ 'Show this section on the website'.
+8.8 Site Settings (singleton) — UPDATED
+This is a singleton document — only one instance exists. It controls all editable static-looking text across the site. The client uses this to update copy without touching any component code.
+HERO
+heroTagline
+: string — the punchy one-liner below the name
+heroCta1Label: string (default: 'More about me')
+heroCta2Label: string (default: 'Get in touch')
+heroCta3Label: string (default: 'Download CV')
+ABOUT
+bio: array (Portable Text / block content — supports bold, italic, links, paragraphs)
+profilePhoto
+: image (with hotspot enabled)
+CV
+cvFile
+: file (PDF — used by all Download CV buttons site-wide)
+CONTACT INFO
+contactEmail
+: string (destination for Resend emails)
+contactIntroText
+: text — the 'Got any questions? Feel free...' paragraph in contact section
+SOCIAL LINKS
+linkedinUrl
+: 
+url
+githubUrl
+: 
+url
+twitterUrl
+: 
+url
+ (optional)
+SECTION INTRO COPY
+projectsSectionIntro
+: text — subtitle under 'Projects' heading
+testimonialsSectionIntro
+: text — subtitle under 'Testimonials' heading
+certificationSectionIntro
+: text — subtitle under 'Certification' heading
+8.9 Navigation (singleton) — NEW
+Controls nav link labels. Useful if the client ever renames or reorders nav items without needing a code change.
+navLinks
+: array of objects
+  each: 
+{ label
+: string, 
+href
+: string (section ID e.g. '#projects') }
+navCtaLabel
+: string (default: 'Download CV') — the top-right nav button
+logoText
+: string (default: 'GN') — the monogram logo
+8.10 SEO Defaults (singleton) — NEW
+Fallback SEO values used when a specific page does not override them. The client can update these from Sanity without any code change.
+defaultMetaTitle
+: string (e.g. 'Girik 
+Nohani
+ — Cybersecurity Professional')
+defaultMetaDescription
+: text (150–160 chars recommended)
+defaultOgImage
+: image (used as fallback Open Graph image for social sharing)
+twitterHandle
+: string (optional, e.g. '@
+girik
+')
+8.11 Editable Text — How Portable Text Works
+Any field typed as 'array (Portable Text / block content)' in Sanity renders a rich text editor in the Studio — similar to a minimal Google Docs. The client can:
+Bold or italicise words
+Add hyperlinks to any word or phrase
+Create paragraph breaks
+Add bullet lists (if enabled in the schema)
+In the Next.js code, render these fields using @portabletext/react with 
+a custom components
+ map that applies the correct Tailwind classes for the site's typography. Never render Portable Text as raw HTML strings.
+Fields that should be Portable Text (rich): bio, 
+caseStudyBody
+, 
+contactIntroText
+, service descriptions, certification descriptions.
+Fields that should be plain text (no formatting): 
+heroTagline
+, all CTA labels, nav labels, meta title/description, company names, degree names.
+9. API Routes
+9.1 POST /
+api
+/contact
+Handles contact form submission. Validates fields, then sends a formatted email to the client via Resend.
+Method: POST
+Body: 
+{ name
+: string, email: string, subject: string, message: string }
+Validation: all fields required, email must be valid format
+On success: sends email via Resend to client's inbox, returns 
+{ success
+: true }
+On error: returns 
+{ error
+: string } with appropriate HTTP status
+Email template: use React Email — include sender name, email, subject, message body in a clean HTML template
+Rate limiting: basic — reject if same IP submits more than 3 times in 10 minutes
+10. Animation Specifications
+All animations use Framer Motion. Keep motion subtle — this is a professional portfolio, not a game.
+10.1 Page Load Sequence
+Nav fades in: delay 0ms, duration 400ms
+Hero label fades in: delay 200ms, duration 400ms
+Hero name typewriter: starts at delay 400ms
+Hero tagline fades in: after typewriter completes + 200ms delay
+Hero CTAs slide up + fade in: staggered 100ms each, after tagline
+10.2 Scroll-Triggered Reveals
+All section headings: fade in + 
+translateY
+(
+20px → 0) when they enter viewport
+Cards and list items: staggered fade in, 80ms between items
+Timeline entries: slide in from left with fade
+Use Framer Motion's 
+whileInView
+ with once: true
+10.3 Typewriter Effect (Hero)
+Characters appear one by one at 60ms intervals
+Blinking cursor: opacity 0/1 toggle at 530ms interval
+Cursor disappears 1s after typing completes
+10.4 Glitch Effect (Optional — on hero name hover)
+On hover of the 
+hero
+ name, apply a brief CSS glitch animation
+Duration: 400ms, single play, do not loop
+Use CSS @keyframes with clip-path or text-shadow displacement in two passes
+11. SEO Configuration
+Basic SEO via Next.js App Router metadata API.
+Root layout: title template '%s | Girik 
+Nohani
+', default description, 
+og:image
+Home page metadata: title 'Girik 
+Nohani
+ — Cybersecurity Professional', description from About bio
+Project pages: title from project title, description from project description, 
+og:image
+ from cover image
+robots.txt: allow all, add sitemap reference
+sitemap.ts
+: auto-generated, include home + all project slugs
+Structured data: JSON-LD Person schema on home page with name, 
+jobTitle
+, 
+url
+, 
+sameAs
+ (LinkedIn, GitHub)
+12. Environment Variables
+Add these 
+to .
+env
+.local
+ (local) and 
+Vercel
+ project settings (production):
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+your_sanity_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_TOKEN=
+your_sanity_write_
+token
+  #
+ for form submissions if needed
+RESEND_API_KEY=
+your_resend_api_key
+CONTACT_EMAIL=girik@yourdomain.com  #
+ destination for contact form emails
+13. Recommended Project Structure
+/
+├── app/
+│   ├── 
+layout.tsx
+              # Root layout, fonts, metadata
+│   ├── 
+page.tsx
+                # Home page — imports all sections
+│   └── 
+api
+/contact/
+route.ts
+    # Resend email handler
+├── components/
+│   ├── sections/               # One file per section
+│   │   ├── 
+Hero.tsx
+│   │   ├── 
+About.tsx
+│   │   ├── 
+Education.tsx
+│   │   ├── 
+Certification.tsx
+│   │   ├── 
+Skills.tsx
+│   │   ├── 
+Projects.tsx
+│   │   ├── 
+Testimonials.tsx
+│   │   ├── 
+Services.tsx
+│   │   ├── 
+Experience.tsx
+│   │   └── 
+Contact.tsx
+│   ├── 
+ui
+/                     # Reusable atoms
+│   │   ├── 
+Button.tsx
+│   │   ├── 
+SectionMarker.tsx
+   # C1, C2, C3 decorative numbers
+│   │   ├── 
+Tag.tsx
+             # Tech stack / category badge
+│   │   └── 
+BackToTop.tsx
+│   ├── layout/
+│   │   ├── 
+Navbar.tsx
+│   │   └── 
+Footer.tsx
+│   └── emails/
+│       └── 
+ContactEmail.tsx
+    # React Email template
+├── sanity/
+│   ├── schema/                 # One file per content type
+│   ├── lib/
+client.ts
+           # Sanity client config
+│   └── lib/
+queries.ts
+          # GROQ query functions
+├── public/
+│   └── cv.pdf                  # Static CV fallback
+└─
+─ .
+env
+.local
+14. Instructions for Cursor
+When using this PRD with Cursor, follow this sequence:
+Initialize Next.js 14 with App Router, Tailwind CSS, and TypeScript. Run: 
+npx
+ 
+create-next-app@latest
+ --typescript --tailwind --app
+Install all packages listed in Section 2.1 before writing any component code
+Set up Sanity project and studio first. Run: 
+npm
+ create 
+sanity@latest
+. Use the schema definitions in Section 8 exactly. Configure the 3 singleton schemas (
+siteSettings
+, navigation, 
+seoDefaults
+) in 
+sanity.config.ts
+ with __
+experimental_actions
+: ['update', 'publish'] to prevent duplicate documents.
+Build mobile-first. Write all Tailwind classes for mobile base, then add 
+sm
+:/md:/
+lg
+: prefixes for larger screens.
+Build one section component at a time. Start with Navbar → Hero → About, then continue in page order.
+Do not use any inline styles. All styling must be Tailwind utility classes.
+All 
+colors
+ must come from a 
+tailwind.config.ts
+ custom theme — define the palette from Section 3.1 as named 
+colors
+ (e.g. 
+bg
+-teal (#00C6BE), 
+bg
+-yellow (#F0E100), text-white (#FFFFFF), text-
+gray
+-light (#E6E6E6), 
+bg
+-page (#000300), 
+bg
+-card (#1A1B1A), divider (#F7F0F0)).
+All animation variants should be defined in a separate /lib/
+animations.ts
+ file and imported into components — do not define inline in JSX.
+Sanity data fetching: use server components and fetch at the page level, passing data as props to section components.
+The contact form must use React state for field values and submission state — no form libraries needed.
+14.1 Prompting Cursor Section by Section
+Use this pattern when prompting Cursor for each section:
+'Build the [Section Name] component for the Girik 
+Nohani
+ portfolio.
+Refer to Section [X] of the PRD for the full spec.
+The data shape is defined in the Sanity schema (Section 8).
+Apply hover states from Section 6 and responsive rules from Section 7.
+Use Framer Motion scroll animations as specified in Section 10.'
+15. Pre-Launch Content Checklist
+All items below must be completed and entered into Sanity before the site goes live:
+Real bio text for About section
+Profile photo (minimum 800x800px, 
+WebP
+ preferred)
+At least 3 real project entries with titles, descriptions, tech stacks, and cover images
+Real case study body content for each project (or placeholder with 'coming soon' flag)
+All certifications with correct issuer names and years
+Skills/tools list reviewed and filled (no Lorem Ipsum)
+Real testimonials from actual collaborators (or remove section until ready)
+Real service descriptions and pricing confirmed
+Real work experience entries
+CV PDF uploaded and linked
+LinkedIn and GitHub URLs confirmed
+Contact email address confirmed and Resend verified
+Domain connected to 
+Vercel
+— End of Document —
+PRD v1.0 · Girik 
+Nohani
+ Portfolio · March 2026
