@@ -114,6 +114,7 @@ export const WRITEUPS_QUERY = /* groq */ `
   title,
   "slug": slug.current,
   publishedDate,
+  tags,
   order
 }
 `

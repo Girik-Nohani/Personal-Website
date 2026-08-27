@@ -104,6 +104,7 @@ export interface Writeup {
   slug: string
   publishedDate: string
   excerpt?: string
+  tags?: string[]
   writeupBody: PortableTextBlock[]
   order: number
 }

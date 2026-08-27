@@ -1,8 +1,4 @@
 // studio/schemaTypes/divider.ts
-//
-// A content-free marker block editors can drop into any rich body field
-// (Case Study or Writeup content) to render a horizontal divider line.
-// No fields — its presence in the array is the entire signal.
 import { defineType } from "sanity";
 
 export const divider = defineType({

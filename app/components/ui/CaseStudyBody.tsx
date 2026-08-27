@@ -1,8 +1,12 @@
 // app/components/ui/CaseStudyBody.tsx
 import Image from "next/image";
-import type { PortableTextBlock, PortableTextComponents } from "@portabletext/react";
+import type {
+  PortableTextBlock,
+  PortableTextComponents,
+} from "@portabletext/react";
 import { PortableText } from "@portabletext/react";
 import { cn } from "@/lib/utils";
+import { getHighlighter, resolveLang } from "@/lib/shiki";
 
 interface CaseStudyBodyProps {
   value: PortableTextBlock[];
@@ -87,20 +91,31 @@ const components: PortableTextComponents = {
         )}
       </figure>
     ),
-    code: ({ value }) => (
-      <div className="overflow-hidden rounded-lg bg-surface">
-        {value.filename && (
-          <div className="border-b border-white/10 px-md py-xs font-mono text-detail text-text-quaternary">
-            {value.filename}
+    code: async ({
+      value,
+    }: {
+      value: { code: string; language?: string; filename?: string };
+    }) => {
+      const highlighter = await getHighlighter();
+      const lang = resolveLang(value.language);
+      const html = highlighter.codeToHtml(value.code, {
+        lang,
+        theme: "github-dark",
+      });
+
+      return (
+        <div className="overflow-hidden rounded-lg bg-surface">
+          {value.filename && (
+            <div className="border-b border-white/10 px-md py-xs font-mono text-detail text-text-quaternary">
+              {value.filename}
+            </div>
+          )}
+          <div className="overflow-x-auto p-md font-mono text-detail [&_pre]:bg-transparent! [&_pre]:m-0!">
+            <div dangerouslySetInnerHTML={{ __html: html }} />
           </div>
-        )}
-        <pre className="overflow-x-auto p-md">
-          <code className="font-mono text-detail text-text-secondary">
-            {value.code}
-          </code>
-        </pre>
-      </div>
-    ),
+        </div>
+      );
+    },
     divider: () => <hr className="my-lg border-t border-white/10" />,
   },
 };

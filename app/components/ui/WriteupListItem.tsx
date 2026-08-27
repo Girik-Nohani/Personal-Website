@@ -6,7 +6,7 @@ import type { Writeup } from '@/types/content'
 
 interface WriteupListItemProps {
   writeup: Writeup
-  index: number // 0-based position, used to render the "01", "02"... number
+  index: number
 }
 
 export function WriteupListItem({ writeup, index }: WriteupListItemProps) {
@@ -25,9 +25,23 @@ export function WriteupListItem({ writeup, index }: WriteupListItemProps) {
           <h4 title={writeup.title} className="truncate font-display text-title-sm font-semibold text-accent-teal transition-colors group-hover:text-accent-yellow">
             {writeup.title}
           </h4>
-          <p className="font-mono text-detail font-normal text-text-tertiary">
-            {formatProjectDate(writeup.publishedDate)}
-          </p>
+          <div className="flex items-center gap-sm">
+            <p className="shrink-0 font-mono text-detail font-normal text-text-tertiary">
+              {formatProjectDate(writeup.publishedDate)}
+            </p>
+            {writeup.tags && writeup.tags.length > 0 && (
+              <div className="flex min-w-0 flex-wrap items-center gap-xs">
+                {writeup.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-sm border border-accent-teal/30 px-2 py-0.5 font-mono text-detail text-text-quaternary"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <ArrowRight

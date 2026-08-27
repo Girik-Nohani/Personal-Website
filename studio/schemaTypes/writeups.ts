@@ -35,6 +35,16 @@ export const writeup = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "tags",
+      title: "Tags",
+      description:
+        'Short labels shown next to the date in the homepage writeup list (e.g. "Web", "Forensics", "OSINT").',
+      type: "array",
+      of: [{ type: "string" }],
+      options: { layout: "tags" },
+      validation: (rule) => rule.max(4),
+    }),
+    defineField({
       name: "excerpt",
       title: "Excerpt",
       description:
@@ -55,7 +65,8 @@ export const writeup = defineType({
     defineField({
       name: "order",
       title: "Order",
-      description: "Controls position in the homepage list — lower numbers appear first.",
+      description:
+        "Controls position in the homepage list — lower numbers appear first.",
       type: "number",
       validation: (rule) => rule.required(),
     }),

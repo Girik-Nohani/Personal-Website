@@ -116,14 +116,14 @@ export function Certifications({
               key={active._id}
               aria-live="polite"
               aria-atomic="true"
-              className="relative rounded-lg border border-accent-teal/15 bg-surface-alt p-md motion-safe:animate-cert-content-fade"
+              className="relative rounded-lg border border-accent-teal/15 bg-surface p-md motion-safe:animate-cert-content-fade"
             >
               {CORNER_CLASSES.map((pos, i) => (
                 <span
                   key={i}
                   aria-hidden="true"
                   className={cn(
-                    "pointer-events-none absolute hidden h-4 w-4 border-accent-teal motion-safe:block motion-safe:animate-bracket-corner",
+                    "pointer-events-none absolute hidden h-8 w-8 border-accent-teal motion-safe:block motion-safe:animate-bracket-corner",
                     pos,
                   )}
                   style={{ animationDelay: `${i * 80}ms` }}
