@@ -5,6 +5,9 @@ import { MobileAnimatedArrow } from '../ui/MobileAnimatedArrow'
 import { SOCIAL_ICON_MAP, getIconLinks } from '@/lib/social-icons'
 import type { SocialLink } from '@/types/content'
 
+// Flip to true when the CV, social links and arrow are ready to show again.
+const SHOW_ABOUT_EXTRAS = false
+
 interface AboutProps {
   heading: string
   bioText: string[]
@@ -58,41 +61,45 @@ export function About({
               ))}
             </div>
 
-            <div className="mt-sm flex justify-center lg:hidden">
-              <MobileAnimatedArrow id="about-mobile" />
-            </div>
-
-            <div className="mt-sm flex flex-col items-center gap-sm lg:flex-row lg:items-center">
-              <a
-                href={resumeUrl}
-                download
-                className="flex h-cta-btn w-full items-center justify-center rounded-md border border-accent-teal font-mono text-base font-bold uppercase tracking-wide text-accent-teal transition-colors hover:bg-accent-teal/10 sm:w-cta-btn lg:w-cta-btn"
-              >
-                Download CV
-              </a>
-
-              <div className="flex items-center justify-center gap-sm lg:justify-start">
-                {iconLinks.map(({ platform, url }) => {
-                  const Icon = SOCIAL_ICON_MAP[platform]
-                  return (
-                    <a
-                      key={platform}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={platform}
-                      className="flex h-(--size-about-icon) w-(--size-about-icon) items-center justify-center rounded-xl bg-icon-bg text-text-primary transition-colors hover:bg-icon-bg/80"
-                    >
-                      <Icon size={20} />
-                    </a>
-                  )
-                })}
-                {/* Animated arrow */}
-                <div className="relative -translate-y-(--spacing-about-arrow-offset-y) translate-x-about-arrow-offset-x hidden lg:block">
-                  <AnimatedArrow id='about' />
+            {SHOW_ABOUT_EXTRAS && (
+              <>
+                <div className="mt-sm flex justify-center lg:hidden">
+                  <MobileAnimatedArrow id="about-mobile" />
                 </div>
-              </div>
-            </div>
+
+                <div className="mt-sm flex flex-col items-center gap-sm lg:flex-row lg:items-center">
+                  <a
+                    href={resumeUrl}
+                    download
+                    className="flex h-cta-btn w-full items-center justify-center rounded-md border border-accent-teal font-mono text-base font-bold uppercase tracking-wide text-accent-teal transition-colors hover:bg-accent-teal/10 sm:w-cta-btn lg:w-cta-btn"
+                  >
+                    Download CV
+                  </a>
+
+                  <div className="flex items-center justify-center gap-sm lg:justify-start">
+                    {iconLinks.map(({ platform, url }) => {
+                      const Icon = SOCIAL_ICON_MAP[platform]
+                      return (
+                        <a
+                          key={platform}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={platform}
+                          className="flex h-(--size-about-icon) w-(--size-about-icon) items-center justify-center rounded-xl bg-icon-bg text-text-primary transition-colors hover:bg-icon-bg/80"
+                        >
+                          <Icon size={20} />
+                        </a>
+                      )
+                    })}
+                    {/* Animated arrow */}
+                    <div className="relative -translate-y-(--spacing-about-arrow-offset-y) translate-x-about-arrow-offset-x hidden lg:block">
+                      <AnimatedArrow id="about" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

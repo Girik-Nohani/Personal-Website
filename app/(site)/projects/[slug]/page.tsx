@@ -50,11 +50,11 @@ export default async function ProjectPage({
     <main className="bg-background">
       <div className="mx-auto max-w-6xl px-6 py-xl">
         <Link
-          href="/"
+          href="/#projects"
           className="inline-flex items-center gap-xs font-mono text-detail text-text-tertiary hover:text-accent-teal transition-colors"
         >
           <ArrowLeft size={16} />
-          Back to portfolio
+          Back to projects
         </Link>
 
         <div className="relative mt-lg aspect-project-image w-full overflow-hidden rounded-lg">
@@ -98,7 +98,7 @@ export default async function ProjectPage({
               rel="noopener noreferrer"
               className="mt-xs inline-flex w-fit items-center gap-xs font-mono text-body font-semibold text-accent-teal hover:underline"
             >
-              Visit Live Site <ExternalLink size={16} />
+              View Project <ExternalLink size={16} />
             </a>
           )}
         </div>

@@ -58,7 +58,7 @@ export function ProjectCard({ project, reverse }: ProjectCardProps) {
             href={`/projects/${project.slug}`}
             className="font-mono text-body font-semibold text-accent-teal hover:underline"
           >
-            View Case Study
+            View More Details
           </Link>
 
           {project.liveLink && (
@@ -66,7 +66,7 @@ export function ProjectCard({ project, reverse }: ProjectCardProps) {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Visit the live version of ${project.title}`}
+              aria-label={`View ${project.title} project link`}
               className="text-accent-teal transition-opacity hover:opacity-80"
             >
               <ExternalLink size={18} />

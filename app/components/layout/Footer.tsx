@@ -12,14 +12,16 @@ export function Footer({ name }: FooterProps) {
     <footer className="relative border-t border-text-quaternary/10 bg-background">
       <div className="relative mx-auto max-w-6xl px-6 py-lg">
         <div className="mx-auto flex items-center justify-center gap-sm sm:max-w-2xl">
-          <div className="flex w-6 shrink-0 flex-col items-start gap-footer-divider-gap sm:w-auto sm:min-w-(--width-footer-divider-min) sm:flex-1">
+          {/* Left horizontal lines */}
+          <div className="flex w-6 shrink-0 flex-col items-end gap-footer-divider-gap sm:w-auto sm:min-w-(--width-footer-divider-min) sm:flex-1">
             <span className="h-px w-full bg-text-quaternary/60" />
             <span className="h-px w-(--width-footer-divider-inner) bg-text-muted/60" />
           </div>
 
+          {/* Left vertical bars */}
           <div className="flex shrink-0 items-center gap-footer-divider-gap">
-            <span className="h-4 w-px bg-text-quaternary/60" />
             <span className="h-4 w-px bg-text-muted/60" />
+            <span className="h-4 w-px bg-text-quaternary/60" />
           </div>
 
           <p className="shrink-0 whitespace-nowrap text-center font-mono text-detail text-text-muted">
@@ -28,11 +30,13 @@ export function Footer({ name }: FooterProps) {
             Rights Reserved
           </p>
 
+          {/* Right vertical bars */}
           <div className="flex shrink-0 items-center gap-footer-divider-gap">
             <span className="h-4 w-px bg-text-quaternary/60" />
             <span className="h-4 w-px bg-text-muted/60" />
           </div>
 
+          {/* Right horizontal lines */}
           <div className="flex w-6 shrink-0 flex-col items-start gap-footer-divider-gap sm:w-auto sm:min-w-(--width-footer-divider-min) sm:flex-1">
             <span className="h-px w-full bg-text-quaternary/60" />
             <span className="h-px w-(--width-footer-divider-inner) bg-text-muted/60" />
